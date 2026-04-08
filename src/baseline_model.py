@@ -67,7 +67,6 @@ def build_pipeline() -> Pipeline:
         max_iter=LR_MAX_ITER,
         random_state=RANDOM_SEED,
         solver="lbfgs",
-        multi_class="auto",
     )
     return Pipeline(steps=[("tfidf", tfidf), ("clf", clf)])
 
