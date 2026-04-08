@@ -1,0 +1,35 @@
+# Social Sentiment Tracker — Python dependencies
+# Install with: pip install -r requirements.txt
+
+# ── Core data science ───────────────────────────────────────────────────────
+numpy>=1.24.0,<2.0.0
+pandas>=2.0.0,<3.0.0
+scikit-learn>=1.3.0,<2.0.0
+
+# ── NLP / Deep learning ─────────────────────────────────────────────────────
+transformers>=4.35.0,<5.0.0
+torch>=2.1.0               # install with correct CUDA version from pytorch.org
+torchvision>=0.16.0        # companion to torch
+
+# ── Text preprocessing ───────────────────────────────────────────────────────
+nltk>=3.8.1
+wordcloud>=1.9.2
+
+# ── Visualisation ────────────────────────────────────────────────────────────
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.18.0
+
+# ── Web demo ────────────────────────────────────────────────────────────────
+streamlit>=1.28.0
+
+# ── Model serialisation ──────────────────────────────────────────────────────
+joblib>=1.3.0
+
+# ── Notebook support ────────────────────────────────────────────────────────
+ipykernel>=6.25.0
+notebook>=7.0.0
+jupyterlab>=4.0.0
+
+# ── Utilities ───────────────────────────────────────────────────────────────
+tqdm>=4.66.0

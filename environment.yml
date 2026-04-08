@@ -1,0 +1,44 @@
+name: sentiment-tracker
+
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+
+dependencies:
+  - python=3.10
+  - pip
+
+  # Core data science
+  - numpy>=1.24.0
+  - pandas>=2.0.0
+  - scikit-learn>=1.3.0
+
+  # Visualisation
+  - matplotlib>=3.7.0
+  - seaborn>=0.12.0
+
+  # Notebook
+  - ipykernel>=6.25.0
+  - notebook>=7.0.0
+  - jupyterlab>=4.0.0
+
+  # Utilities
+  - tqdm>=4.66.0
+  - joblib>=1.3.0
+
+  # PyTorch (CPU build — replace with pytorch-cuda for GPU)
+  - pytorch>=2.1.0
+  - torchvision>=0.16.0
+  - cpuonly          # remove this line and add pytorch-cuda=12.1 for GPU
+
+  - pip:
+    # HuggingFace stack
+    - transformers>=4.35.0
+    # NLP helpers
+    - nltk>=3.8.1
+    - wordcloud>=1.9.2
+    # Interactive visualisation
+    - plotly>=5.18.0
+    # Web demo
+    - streamlit>=1.28.0
