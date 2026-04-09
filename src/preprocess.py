@@ -22,15 +22,34 @@ logger = get_logger(__name__)
 # ---------------------------------------------------------------------------
 
 def _ensure_nltk_data() -> None:
-    """Download required NLTK corpora if not already present."""
+    """Download required NLTK corpora if not already present.
+
+    Handles both legacy ``punkt`` (NLTK < 3.9) and the renamed
+    ``punkt_tab`` tokeniser models (NLTK >= 3.9).
+    """
     try:
         import nltk
-        for resource in ("stopwords", "wordnet", "omw-1.4", "punkt"):
+
+        corpora = ("stopwords", "wordnet", "omw-1.4")
+        for resource in corpora:
             try:
-                nltk.data.find(f"corpora/{resource}" if resource != "punkt" else f"tokenizers/{resource}")
+                nltk.data.find(f"corpora/{resource}")
             except LookupError:
                 logger.info("Downloading NLTK resource: %s", resource)
                 nltk.download(resource, quiet=True)
+
+        # punkt_tab (NLTK >= 3.9) supersedes punkt — try both
+        for tok_resource in ("punkt_tab", "punkt"):
+            try:
+                nltk.data.find(f"tokenizers/{tok_resource}")
+                break  # found one, no need to check the other
+            except LookupError:
+                try:
+                    nltk.download(tok_resource, quiet=True)
+                    break
+                except Exception:
+                    continue  # try next
+
     except ImportError:
         logger.warning("NLTK not installed — skipping resource download.")
 

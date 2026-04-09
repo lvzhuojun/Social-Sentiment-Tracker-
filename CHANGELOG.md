@@ -11,6 +11,15 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [2.0.1] — 2026-04-08
+
+### Fixed
+- `src/preprocess.py` `_ensure_nltk_data()` — now tries `punkt_tab` first
+  (NLTK ≥ 3.9) and falls back to `punkt` (NLTK < 3.9); prevents silent
+  `word_tokenize` failures on newer NLTK installations
+
+---
+
 ## [2.0.0] — 2026-04-08
 
 ### Added
