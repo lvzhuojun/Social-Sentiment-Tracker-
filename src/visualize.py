@@ -7,13 +7,10 @@ notebooks, Streamlit, or saved to disk. Word-cloud images are saved as PNGs.
 
 import sys
 from pathlib import Path
-from typing import List
-
 import numpy as np
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
@@ -325,7 +322,12 @@ def plot_confidence_gauge(confidence: float, sentiment_label: str) -> go.Figure:
     Example:
         >>> fig = plot_confidence_gauge(0.87, "Positive")
     """
-    color = "#00CC96" if "Positive" in sentiment_label else "#636EFA" if "Neutral" in sentiment_label else "#EF553B"
+    if "Positive" in sentiment_label:
+        color = "#00CC96"
+    elif "Neutral" in sentiment_label:
+        color = "#636EFA"
+    else:
+        color = "#EF553B"
 
     fig = go.Figure(go.Indicator(
         mode="gauge+number",

@@ -22,14 +22,7 @@ APP_DIR = Path(__file__).resolve().parent
 ROOT_DIR = APP_DIR.parent
 sys.path.insert(0, str(ROOT_DIR))
 
-from config import (
-    BASELINE_MODEL_PATH,
-    BERT_MODEL_PATH,
-    FIGURES_DIR,
-    MOCK_DATA_PATH,
-    SENTIMENT140_PATH,
-    set_seed,
-)
+from config import FIGURES_DIR, set_seed
 
 set_seed()
 
@@ -207,7 +200,8 @@ elif page == "🔍 Data Analysis":
         kw_sentiment = st.selectbox(
             "Sentiment filter",
             options=[None, 1, 0, 2],
-            format_func=lambda x: "All" if x is None else {1: "Positive", 0: "Negative", 2: "Neutral"}[x],
+            format_func=lambda x: "All" if x is None else
+            {1: "Positive", 0: "Negative", 2: "Neutral"}[x],
         )
         n_keywords = st.slider("Number of keywords", 5, 40, 20)
     with kw_col2:
@@ -260,7 +254,10 @@ elif page == "🤖 Live Demo":
                 if model_choice.startswith("Baseline"):
                     pipeline = get_baseline_pipeline()
                     if pipeline is None:
-                        st.error("Baseline model not found. Train it first with `python src/baseline_model.py`.")
+                        st.error(
+                            "Baseline model not found. "
+                            "Train it first with `python src/baseline_model.py`."
+                        )
                         st.stop()
                     from src.baseline_model import predict
                     labels, probs = predict(pipeline, cleaned)
@@ -269,7 +266,10 @@ elif page == "🤖 Live Demo":
                 else:  # BERT
                     model, tokenizer = get_bert_model()
                     if model is None:
-                        st.error("BERT model not found. Train it first with `python src/bert_model.py`.")
+                        st.error(
+                            "BERT model not found. "
+                            "Train it first with `python src/bert_model.py`."
+                        )
                         st.stop()
                     from src.bert_model import predict_bert
                     labels, confidences = predict_bert(model, tokenizer, cleaned)
@@ -301,7 +301,11 @@ elif page == "🤖 Live Demo":
                     plot_confidence_gauge(conf, sentiment_str.split()[0]),
                     use_container_width=True,
                 )
-            results.append({"text": texts_to_analyse[0], "sentiment": sentiment_str, "confidence": f"{conf:.2%}"})
+            results.append({
+                "text": texts_to_analyse[0],
+                "sentiment": sentiment_str,
+                "confidence": f"{conf:.2%}",
+            })
 
         else:
             # Batch — table display

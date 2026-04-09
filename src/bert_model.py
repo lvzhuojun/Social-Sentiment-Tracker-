@@ -36,7 +36,7 @@ logger = get_logger(__name__)
 try:
     import torch
     import torch.nn as nn
-    from torch.utils.data import DataLoader, Dataset
+    from torch.utils.data import DataLoader
     from transformers import (
         AutoTokenizer,
         BertForSequenceClassification,
@@ -101,8 +101,8 @@ class SentimentDataset:
             return_tensors="pt",
         )
         return {
-            "input_ids": encoding["input_ids"].squeeze(0),          # (seq_len,)
-            "attention_mask": encoding["attention_mask"].squeeze(0), # (seq_len,)
+            "input_ids": encoding["input_ids"].squeeze(0),  # (seq_len,)
+            "attention_mask": encoding["attention_mask"].squeeze(0),  # (seq_len,)
             "label": torch.tensor(self.labels[idx], dtype=torch.long),
         }
 
@@ -334,9 +334,12 @@ def train_bert(
         yp = np.array(all_preds)
         metrics = {
             "accuracy": round(float(accuracy_score(yt, yp)), 4),
-            "precision": round(float(precision_score(yt, yp, average="weighted", zero_division=0)), 4),
-            "recall": round(float(recall_score(yt, yp, average="weighted", zero_division=0)), 4),
-            "f1": round(float(f1_score(yt, yp, average="weighted", zero_division=0)), 4),
+            "precision": round(
+                float(precision_score(yt, yp, average="weighted", zero_division=0)), 4),
+            "recall": round(
+                float(recall_score(yt, yp, average="weighted", zero_division=0)), 4),
+            "f1": round(
+                float(f1_score(yt, yp, average="weighted", zero_division=0)), 4),
             "roc_auc": None,
         }
         metrics_path = FIGURES_DIR.parent / "metrics.json"

@@ -32,6 +32,7 @@ logger = get_logger(__name__)
 # Sentiment140 loader
 # ---------------------------------------------------------------------------
 
+
 def load_sentiment140(filepath: Path | str) -> pd.DataFrame:
     """Load and normalise the Sentiment140 CSV dataset.
 
@@ -69,7 +70,10 @@ def load_sentiment140(filepath: Path | str) -> pd.DataFrame:
     df = df.dropna(subset=["label", "text"])
     df["label"] = df["label"].astype(int)
 
-    logger.info("Loaded %d rows, label distribution: %s", len(df), df["label"].value_counts().to_dict())
+    logger.info(
+        "Loaded %d rows, label distribution: %s",
+        len(df), df["label"].value_counts().to_dict(),
+    )
     return df
 
 
@@ -440,7 +444,10 @@ def generate_mock_data(n: int = 500, save_path: Path | None = None) -> pd.DataFr
         df.to_csv(save_path, index=False)
         logger.info("Mock data saved to %s", save_path)
 
-    logger.info("Generated %d mock records (label dist: %s)", len(df), df["label"].value_counts().to_dict())
+    logger.info(
+        "Generated %d mock records (label dist: %s)",
+        len(df), df["label"].value_counts().to_dict(),
+    )
     return df
 
 

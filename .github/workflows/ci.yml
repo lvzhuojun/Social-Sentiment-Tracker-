@@ -25,11 +25,7 @@ jobs:
         run: pip install flake8
 
       - name: Lint with flake8
-        run: |
-          flake8 src/ app/ config.py \
-            --max-line-length=100 \
-            --extend-ignore=E203,W503 \
-            --exclude=__pycache__
+        run: flake8 src/ app/ config.py
 
       # ── Test dependencies ────────────────────────────────────────────────────
       - name: Install test dependencies

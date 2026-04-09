@@ -21,6 +21,7 @@ logger = get_logger(__name__)
 # NLTK resource download (safe / idempotent)
 # ---------------------------------------------------------------------------
 
+
 def _ensure_nltk_data() -> None:
     """Download required NLTK corpora if not already present.
 
