@@ -437,6 +437,15 @@ jupyter lab
 
 ---
 
+### `src/explain.py`
+
+| 函数 | 签名 | 说明 |
+|------|------|------|
+| `explain_baseline_prediction` | `explain_baseline_prediction(pipeline, text, n_top=12)` | 使用 SHAP `LinearExplainer` 对 TF-IDF+LR 模型进行解释；返回 `(contributions, predicted_class, classes)`，其中 contributions 为按 `abs(shap_value)` 降序排列的 `(token, shap_value)` 列表 |
+| `shap_to_plotly_bar` | `shap_to_plotly_bar(contributions, predicted_class, label_names=None)` | 将 SHAP token 归因渲染为水平 Plotly 柱状图（绿色 = 正向推动，红色 = 负向推动） |
+
+---
+
 ## 界面截图
 
 ### 首页
@@ -462,7 +471,7 @@ jupyter lab
 - [ ] **多类别细粒度情感** — 5 类标签（极消极 → 极积极）
 - [ ] **实时数据接入** — Twitter / Reddit API 数据流管道
 - [ ] **基于方面的情感分析（ABSA）** — 实体级别的观点挖掘
-- [ ] **模型可解释性** — 集成 SHAP / LIME，可视化预测依据
+- [x] **模型可解释性** — 基线模型 SHAP token 级归因（`src/explain.py`）
 - [ ] **量化推理** — INT8 BERT CPU 推理加速（速度提升 3–4 倍）
 - [ ] **Docker 部署** — 一键容器化演示环境
 - [ ] **CI/CD 流水线** — GitHub Actions：代码检查 + 单元测试 + 构建验证

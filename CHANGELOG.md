@@ -11,6 +11,23 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [2.2.0] — 2026-04-08
+
+### Added
+- `src/explain.py` — SHAP-based prediction explainability module
+  - `explain_baseline_prediction()`: uses `shap.LinearExplainer` with zero-vector background
+    on the TF-IDF+LR pipeline; returns top-N `(token, shap_value)` contributions sorted by
+    absolute impact, predicted class, and known class list
+  - `shap_to_plotly_bar()`: renders token attributions as a horizontal Plotly bar chart
+    (green = positive SHAP / pushes toward class, red = negative / pushes away)
+- `tests/test_explain.py` — 13 pytest cases covering types, sorting, n_top, empty input,
+  stopword-only input, and custom label names; skipped gracefully if `shap` not installed
+- `app/streamlit_app.py` — "Why this prediction?" SHAP attribution panel on Live Demo page
+  (baseline single-prediction mode only); falls back to info message if `shap` not installed
+- `requirements.txt` / `environment.yml` — added `shap>=0.44.0`
+
+---
+
 ## [2.1.0] — 2026-04-09
 
 ### Added

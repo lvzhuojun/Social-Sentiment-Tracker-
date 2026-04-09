@@ -437,6 +437,15 @@ Results on the held-out test set (stratified 20 %, `RANDOM_SEED=42`).
 
 ---
 
+### `src/explain.py`
+
+| Function | Signature | Description |
+|----------|-----------|-------------|
+| `explain_baseline_prediction` | `explain_baseline_prediction(pipeline, text, n_top=12)` | SHAP `LinearExplainer` on TF-IDF+LR pipeline; returns `(contributions, predicted_class, classes)` where contributions are `(token, shap_value)` tuples sorted by `abs(shap_value)` descending |
+| `shap_to_plotly_bar` | `shap_to_plotly_bar(contributions, predicted_class, label_names=None)` | Render SHAP token attributions as a horizontal Plotly bar chart (green = pushes toward class, red = pushes away) |
+
+---
+
 ## Screenshots
 
 ### Home Page
@@ -462,7 +471,7 @@ Results on the held-out test set (stratified 20 %, `RANDOM_SEED=42`).
 - [ ] **Multi-class sentiment** — 5-class fine-grained labels (very negative → very positive)
 - [ ] **Live data ingestion** — Twitter / Reddit API streaming pipeline
 - [ ] **Aspect-Based Sentiment Analysis (ABSA)** — entity-level opinion mining
-- [ ] **Model explainability** — SHAP / LIME integration for prediction reasoning
+- [x] **Model explainability** — SHAP token-level attribution for baseline model (`src/explain.py`)
 - [ ] **Quantised inference** — INT8 BERT for CPU speedup (3–4× faster)
 - [ ] **Docker deployment** — one-command containerised demo
 - [ ] **CI/CD pipeline** — GitHub Actions: lint, unit tests, build verification

@@ -316,6 +316,31 @@ elif page == "🤖 Live Demo":
                 "confidence": f"{conf:.2%}",
             })
 
+            # ── SHAP explanation (baseline model only) ──────────────────────
+            if model_choice.startswith("Baseline"):
+                st.markdown("---")
+                st.markdown("### Why this prediction?")
+                st.caption(
+                    "SHAP token attributions — green bars push toward the "
+                    "predicted class, red bars push away."
+                )
+                try:
+                    from src.explain import explain_baseline_prediction, shap_to_plotly_bar
+                    pipeline = get_baseline_pipeline()
+                    contribs, pred_cls, classes = explain_baseline_prediction(
+                        pipeline, cleaned[0]
+                    )
+                    label_names = {0: "Negative", 1: "Positive", 2: "Neutral"}
+                    fig_shap = shap_to_plotly_bar(contribs, pred_cls, label_names)
+                    st.plotly_chart(fig_shap, use_container_width=True)
+                except ImportError:
+                    st.info(
+                        "Install `shap` to enable explanations: "
+                        "`pip install shap`"
+                    )
+                except Exception as exc:
+                    st.warning(f"Explanation unavailable: {exc}")
+
         else:
             # Batch — table display
             for orig, label, conf in zip(texts_to_analyse, labels, confidences):
