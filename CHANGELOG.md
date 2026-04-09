@@ -11,6 +11,15 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [1.7.0] — 2026-04-08
+
+### Added
+- `.github/workflows/ci.yml` — GitHub Actions CI pipeline:
+  lint with flake8 (max-line-length=100) and run pytest on every push / PR to `main`
+- CI badge added to `README.md` and `README_CN.md`
+
+---
+
 ## [1.6.0] — 2026-04-08
 
 ### Fixed
