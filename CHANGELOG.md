@@ -11,6 +11,27 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [1.6.0] — 2026-04-08
+
+### Fixed
+- `src/bert_model.py` — added `weights_only=True` to both `torch.load()` calls;
+  eliminates PyTorch FutureWarning and prevents arbitrary code execution when
+  loading untrusted checkpoint files
+- `src/visualize.py` — `plot_confidence_gauge()` now maps Neutral sentiment to
+  blue (`#636EFA`) instead of incorrectly using red
+- `app/streamlit_app.py` — replaced deprecated `use_column_width=True` with
+  `use_container_width=True` for all `st.image()` calls (Streamlit ≥ 1.28)
+
+### Changed
+- `README.md` / `README_CN.md` — corrected train/val/test split ratio from
+  72 % / 8 % / 20 % → **70 % / 10 % / 20 %** to match actual formula behaviour
+- `src/data_loader.py` — corrected `split_data()` docstring: `val_size` is a
+  fraction of *total* data (not remaining), default 0.1 → 10 % of total
+- `README.md` / `README_CN.md` — Author section: corrected name to
+  **Zhuojun Lyu (吕卓俊)**, added real LinkedIn and email links
+
+---
+
 ## [1.5.0] — 2026-04-08
 
 ### Changed

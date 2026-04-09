@@ -166,8 +166,8 @@ def split_data(
     Args:
         df: Full cleaned DataFrame with a ``label`` column.
         test_size: Fraction reserved for the test set (default 0.2).
-        val_size: Fraction of the *remaining* data reserved for validation
-                  (default 0.1, i.e. ≈ 8 % of total).
+        val_size: Fraction of the *total* data reserved for validation
+                  (default 0.1, i.e. 10 % of total).
         save_dir: If provided, save ``train.csv``, ``val.csv``, ``test.csv``
                   to this directory. Defaults to ``config.PROCESSED_DATA_DIR``.
 

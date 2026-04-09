@@ -41,7 +41,7 @@
 | 1 | **双模型流水线** | TF-IDF + 逻辑回归（CPU 秒级训练）与 BERT 微调（生产级语义表示） |
 | 2 | **自动数据回退** | `load_data()` 优先使用 Sentiment140 CSV；文件缺失时自动生成 500 条均衡模拟数据 |
 | 3 | **可复现实验** | `set_seed(42)` 在 `config.py` 中全局固定 `random`、`numpy`、`torch` 随机种子 |
-| 4 | **分层数据划分** | `split_data()` 执行分层 train / val / test 划分（默认 72% / 8% / 20%） |
+| 4 | **分层数据划分** | `split_data()` 执行分层 train / val / test 划分（默认 70% / 10% / 20%） |
 | 5 | **丰富交互图表** | Plotly 饼图、直方图、折线图、柱状图；Matplotlib 词云；Seaborn 热力图 |
 | 6 | **四页 Web 演示** | 首页 · 数据分析 · 实时预测（单条 + 批量 + CSV 下载）· 模型对比 |
 | 7 | **Google 风格文档** | 每个公共函数均包含 `Args`、`Returns`、`Raises` 和 `Example` 文档块 |
@@ -453,8 +453,8 @@ jupyter lab
 
 ## 作者
 
-**吕卓骏（Zhuojun Lv）**
-[GitHub](https://github.com/lvzhuojun) · [LinkedIn](#) · [邮箱](#)
+**吕卓俊（Zhuojun Lyu）**
+[GitHub](https://github.com/lvzhuojun) · [LinkedIn](https://www.linkedin.com/in/zhuojun-lyu/) · [邮箱](mailto:lzj2729033776@gmail.com)
 
 ---
 

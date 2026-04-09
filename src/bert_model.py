@@ -308,7 +308,7 @@ def train_bert(
             logger.info("  ↑ New best val_acc %.4f — model saved.", best_val_acc)
 
     # Reload best weights
-    model.load_state_dict(torch.load(BERT_MODEL_PATH, map_location=device))
+    model.load_state_dict(torch.load(BERT_MODEL_PATH, map_location=device, weights_only=True))
     model.eval()
     logger.info("Training complete. Best val_acc: %.4f", best_val_acc)
     return model, tokenizer
@@ -415,7 +415,7 @@ def load_bert_model(
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     model = SentimentClassifier(num_labels=num_labels, model_name=model_name)
-    model.load_state_dict(torch.load(model_path, map_location=device))
+    model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
     model.to(device)
     model.eval()
     logger.info("BERT model loaded from %s (device=%s)", model_path, device)

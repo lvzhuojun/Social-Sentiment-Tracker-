@@ -325,7 +325,7 @@ def plot_confidence_gauge(confidence: float, sentiment_label: str) -> go.Figure:
     Example:
         >>> fig = plot_confidence_gauge(0.87, "Positive")
     """
-    color = "#00CC96" if "Positive" in sentiment_label else "#EF553B"
+    color = "#00CC96" if "Positive" in sentiment_label else "#636EFA" if "Neutral" in sentiment_label else "#EF553B"
 
     fig = go.Figure(go.Indicator(
         mode="gauge+number",

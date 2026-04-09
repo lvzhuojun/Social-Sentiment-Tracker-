@@ -192,7 +192,7 @@ elif page == "🔍 Data Analysis":
         with st.spinner("Generating word cloud…"):
             try:
                 wc_path = plot_wordcloud(df, sentiment=sentiment_choice)
-                st.image(str(wc_path), use_column_width=True)
+                st.image(str(wc_path), use_container_width=True)
             except ImportError:
                 st.info("Install wordcloud (`pip install wordcloud`) to enable this chart.")
             except Exception as exc:
@@ -366,7 +366,7 @@ elif page == "📈 Model Comparison":
     # Check if saved figures exist and display them
     comparison_img = FIGURES_DIR / "model_comparison.png"
     if comparison_img.exists():
-        st.image(str(comparison_img), caption="Model Comparison", use_column_width=True)
+        st.image(str(comparison_img), caption="Model Comparison", use_container_width=True)
     else:
         st.info("No comparison chart found yet — train both models first.")
 
@@ -411,10 +411,10 @@ elif page == "📈 Model Comparison":
     roc_bert = FIGURES_DIR / "roc_curve_bert_fine-tuned.png"
     col1, col2 = st.columns(2)
     if roc_baseline.exists():
-        col1.image(str(roc_baseline), caption="Baseline ROC", use_column_width=True)
+        col1.image(str(roc_baseline), caption="Baseline ROC", use_container_width=True)
     else:
         col1.info("Baseline ROC curve not available yet.")
     if roc_bert.exists():
-        col2.image(str(roc_bert), caption="BERT ROC", use_column_width=True)
+        col2.image(str(roc_bert), caption="BERT ROC", use_container_width=True)
     else:
         col2.info("BERT ROC curve not available yet.")

@@ -41,7 +41,7 @@
 | 1 | **Dual-Model Pipeline** | TF-IDF + LogReg baseline (CPU, seconds) vs. fine-tuned BERT (GPU/CPU, production-quality) |
 | 2 | **Automatic Data Fallback** | `load_data()` tries Sentiment140 CSV first; auto-generates 500 balanced mock samples if absent |
 | 3 | **Reproducible Experiments** | `set_seed(42)` fixes `random`, `numpy`, and `torch` seeds globally from `config.py` |
-| 4 | **Stratified Splits** | `split_data()` performs stratified train / val / test (default 72 % / 8 % / 20 %) |
+| 4 | **Stratified Splits** | `split_data()` performs stratified train / val / test (default 70 % / 10 % / 20 %) |
 | 5 | **Rich Interactive Charts** | Plotly pie, histogram, trend line, bar chart; Matplotlib word clouds; Seaborn heatmaps |
 | 6 | **Four-Page Web Demo** | Home · Data Analysis · Live Prediction (single + batch + CSV download) · Model Comparison |
 | 7 | **Google-Style Docstrings** | Every public function has `Args`, `Returns`, `Raises`, and `Example` blocks |
@@ -453,8 +453,8 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the complete version history.
 
 ## Author
 
-**Zhuojun Lv (吕卓骏)**
-[GitHub](https://github.com/lvzhuojun) · [LinkedIn](#) · [Email](#)
+**Zhuojun Lyu (吕卓俊)**
+[GitHub](https://github.com/lvzhuojun) · [LinkedIn](https://www.linkedin.com/in/zhuojun-lyu/) · [Email](mailto:lzj2729033776@gmail.com)
 
 ---
 
