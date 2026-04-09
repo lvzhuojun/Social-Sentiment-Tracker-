@@ -61,3 +61,4 @@ htmlcov/
 
 # ── One-off / temporary scripts (not part of the public API) ─────────────────
 run_training.py
+take_screenshots.py

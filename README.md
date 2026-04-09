@@ -9,8 +9,7 @@
 
 > An end-to-end NLP platform that ingests raw social-media text, cleans it, trains two complementary sentiment models — a fast TF-IDF + Logistic Regression baseline and a fine-tuned **BERT** (`bert-base-uncased`) — and serves predictions through an interactive four-page **Streamlit** web demo. Targets the Sentiment140 Twitter dataset with an automatic 500-sample mock-data fallback for offline development.
 
-<!-- Demo screenshot — add after first training run -->
-<!-- ![Streamlit Demo](reports/figures/demo_screenshot.png) -->
+![Streamlit Demo](reports/figures/screenshot_home.png)
 
 **Language / 语言:** [English](#) · [中文](README_CN.md)
 
@@ -290,18 +289,19 @@ jupyter lab
 ## Model Performance
 
 Results on the held-out test set (stratified 20 %, `RANDOM_SEED=42`).
-*Populate after running training scripts.*
 
-| Metric | Baseline (TF-IDF + LR) | BERT (bert-base-uncased) |
-|--------|------------------------|--------------------------|
-| Accuracy | 0.8841 | — |
-| Precision (weighted) | 0.9014 | — |
-| Recall (weighted) | 0.8841 | — |
-| F1 (weighted) | 0.8824 | — |
+| Metric | Baseline (TF-IDF + LR) | BERT (bert-base-uncased) † |
+|--------|------------------------|---------------------------|
+| Accuracy | 0.8841 | 0.4058 |
+| Precision (weighted) | 0.9014 | 0.3190 |
+| Recall (weighted) | 0.8841 | 0.4058 |
+| F1 (weighted) | 0.8824 | 0.2844 |
 | ROC-AUC | 0.9717 | — |
 
+> † BERT results are from a **quick-run demo** only: 1 epoch, CPU-only, 240 training samples (auto-generated mock data).
+> Full fine-tuning on Sentiment140 (~1.6 M tweets) with GPU would be expected to significantly outperform the baseline.
 > Evaluation is performed by `src/evaluate.evaluate_model()`.
-> Confusion matrices and ROC curves are saved automatically to `reports/figures/`.
+> Confusion matrices are saved automatically to `reports/figures/`.
 
 ---
 
@@ -405,19 +405,19 @@ Results on the held-out test set (stratified 20 %, `RANDOM_SEED=42`).
 ## Screenshots
 
 ### Home Page
-<!-- ![Home Page](reports/figures/screenshot_home.png) -->
+![Home Page](reports/figures/screenshot_home.png)
 *Dataset statistics, sentiment distribution pie chart, and project architecture overview.*
 
 ### Data Analysis Page
-<!-- ![EDA Page](reports/figures/screenshot_eda.png) -->
+![EDA Page](reports/figures/screenshot_eda.png)
 *Interactive word clouds, text-length histograms, and TF-IDF keyword bar charts.*
 
 ### Live Demo — Single Prediction
-<!-- ![Live Demo](reports/figures/screenshot_live_demo.png) -->
+![Live Demo](reports/figures/screenshot_live_demo.png)
 *Real-time prediction with confidence gauge. Supports single text and batch CSV download mode.*
 
 ### Model Comparison Page
-<!-- ![Model Comparison](reports/figures/screenshot_comparison.png) -->
+![Model Comparison](reports/figures/screenshot_comparison.png)
 *Side-by-side metrics table, performance bar chart, and ROC curves for Baseline vs. BERT.*
 
 ---

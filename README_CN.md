@@ -9,8 +9,7 @@
 
 > 一个端到端的 NLP 情感分析平台。从原始社交媒体文本出发，经过数据清洗与预处理，训练两种互补模型——快速的 TF-IDF + 逻辑回归基线模型与经过微调的 **BERT**（`bert-base-uncased`）——并通过交互式四页 **Streamlit** Web 演示提供预测服务。默认使用 Sentiment140 Twitter 数据集，在数据文件缺失时自动生成 500 条模拟数据用于离线开发。
 
-<!-- 演示截图 — 首次训练后添加 -->
-<!-- ![Streamlit Demo](reports/figures/demo_screenshot.png) -->
+![Streamlit Demo](reports/figures/screenshot_home.png)
 
 **Language / 语言：** [English](README.md) · [中文](#)
 
@@ -290,18 +289,19 @@ jupyter lab
 ## 模型性能
 
 在分层划分的测试集上的评估结果（占总数据 20%，`RANDOM_SEED=42`）。
-*请在训练完成后填写实际数值。*
 
-| 指标 | 基线（TF-IDF + LR） | BERT（bert-base-uncased） |
-|------|---------------------|--------------------------|
-| 准确率 (Accuracy) | 0.8841 | — |
-| 精确率 (Precision, weighted) | 0.9014 | — |
-| 召回率 (Recall, weighted) | 0.8841 | — |
-| F1 分数 (weighted) | 0.8824 | — |
+| 指标 | 基线（TF-IDF + LR） | BERT（bert-base-uncased）† |
+|------|---------------------|---------------------------|
+| 准确率 (Accuracy) | 0.8841 | 0.4058 |
+| 精确率 (Precision, weighted) | 0.9014 | 0.3190 |
+| 召回率 (Recall, weighted) | 0.8841 | 0.4058 |
+| F1 分数 (weighted) | 0.8824 | 0.2844 |
 | ROC-AUC | 0.9717 | — |
 
+> † BERT 结果来自**快速演示运行**：仅训练 1 个 epoch，纯 CPU，240 条训练样本（自动生成的模拟数据）。
+> 在 Sentiment140（约 160 万条推文）上使用 GPU 完整微调后，BERT 预期将显著优于基线模型。
 > 评估使用 `src/evaluate.evaluate_model()` 完成。
-> 混淆矩阵和 ROC 曲线图自动保存至 `reports/figures/`。
+> 混淆矩阵自动保存至 `reports/figures/`。
 
 ---
 
@@ -405,19 +405,19 @@ jupyter lab
 ## 界面截图
 
 ### 首页
-<!-- ![首页](reports/figures/screenshot_home.png) -->
+![首页](reports/figures/screenshot_home.png)
 *数据集统计信息、情感分布饼图及项目架构总览。*
 
 ### 数据分析页
-<!-- ![数据分析](reports/figures/screenshot_eda.png) -->
+![数据分析](reports/figures/screenshot_eda.png)
 *交互式词云、文本长度直方图及 TF-IDF 关键词柱状图。*
 
 ### 实时预测 — 单条输入
-<!-- ![实时预测](reports/figures/screenshot_live_demo.png) -->
+![实时预测](reports/figures/screenshot_live_demo.png)
 *实时预测并展示置信度仪表盘，支持单条文本输入和批量 CSV 下载。*
 
 ### 模型对比页
-<!-- ![模型对比](reports/figures/screenshot_comparison.png) -->
+![模型对比](reports/figures/screenshot_comparison.png)
 *基线模型与 BERT 的指标对比表、性能柱状图及 ROC 曲线对比。*
 
 ---

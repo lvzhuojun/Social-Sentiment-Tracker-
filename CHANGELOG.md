@@ -11,6 +11,19 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [1.4.0] — 2026-04-08
+
+### Added
+- `reports/figures/screenshot_home.png`, `screenshot_eda.png`, `screenshot_live_demo.png`, `screenshot_comparison.png` — automated headless Playwright screenshots of all four Streamlit pages
+- `notebooks/03_bert_finetune.ipynb` patched and executed: 1 epoch, CPU, 240 samples (demo run); BERT metrics: Acc 0.4058 · F1 0.2844
+
+### Changed
+- `README.md` / `README_CN.md` — Screenshots section: uncommented all four page images (now live)
+- `README.md` / `README_CN.md` — Model Performance table: filled BERT column with quick-run demo results with explanatory footnote
+- `notebooks/03_bert_finetune.ipynb` — epochs 2 → 1; confusion matrix uses dynamic class labels; ROC curve skips gracefully for multi-class
+
+---
+
 ## [1.3.0] — 2026-04-08
 
 ### Added
