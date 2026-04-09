@@ -22,6 +22,7 @@ from config import (
     MOCK_DATA_PATH,
     RANDOM_SEED,
     TEST_SIZE,
+    TWEET_EVAL_PATH,
     VAL_SIZE,
     get_logger,
 )
@@ -67,6 +68,42 @@ def load_sentiment140(filepath: Path | str) -> pd.DataFrame:
 
     # Map 4 → 1 for binary classification
     df["label"] = df["label"].map({0: 0, 4: 1})
+    df = df.dropna(subset=["label", "text"])
+    df["label"] = df["label"].astype(int)
+
+    logger.info(
+        "Loaded %d rows, label distribution: %s",
+        len(df), df["label"].value_counts().to_dict(),
+    )
+    return df
+
+
+# ---------------------------------------------------------------------------
+# TweetEval loader
+# ---------------------------------------------------------------------------
+
+
+def load_tweet_eval(filepath: Path | str) -> pd.DataFrame:
+    """Load the downloaded TweetEval sentiment CSV.
+
+    Expected CSV columns: ``label, text, id``.
+    Labels follow project convention: 0=negative, 1=positive, 2=neutral.
+
+    Args:
+        filepath: Path to ``tweet_eval_sentiment.csv``.
+
+    Returns:
+        DataFrame with columns ``['id', 'label', 'text']``.
+
+    Raises:
+        FileNotFoundError: If *filepath* does not exist.
+    """
+    filepath = Path(filepath)
+    if not filepath.exists():
+        raise FileNotFoundError(f"TweetEval dataset not found: {filepath}")
+
+    logger.info("Loading TweetEval sentiment from %s", filepath)
+    df = pd.read_csv(filepath)
     df = df.dropna(subset=["label", "text"])
     df["label"] = df["label"].astype(int)
 
@@ -469,15 +506,26 @@ def load_data(real_path: Path | None = None) -> pd.DataFrame:
     """
     from config import SENTIMENT140_PATH  # local import to avoid circular
 
-    path = Path(real_path) if real_path else SENTIMENT140_PATH
-
-    try:
-        df = load_sentiment140(path)
-        # Sentiment140 has no neutral class — treat as binary
-        df = df[df["label"].isin([0, 1])].copy()
-    except FileNotFoundError:
-        logger.warning("Sentiment140 not found at %s — generating mock data.", path)
-        df = generate_mock_data(save_path=MOCK_DATA_PATH)
+    # Priority: real_path arg → TweetEval → Sentiment140 → mock
+    if real_path:
+        explicit = Path(real_path)
+        if explicit.exists():
+            try:
+                df = load_tweet_eval(explicit)
+            except Exception:
+                df = load_sentiment140(explicit)
+                df = df[df["label"].isin([0, 1])].copy()
+        else:
+            raise FileNotFoundError(f"Specified path not found: {explicit}")
+    elif TWEET_EVAL_PATH.exists():
+        df = load_tweet_eval(TWEET_EVAL_PATH)
+    else:
+        try:
+            df = load_sentiment140(SENTIMENT140_PATH)
+            df = df[df["label"].isin([0, 1])].copy()
+        except FileNotFoundError:
+            logger.warning("No real dataset found — generating mock data.")
+            df = generate_mock_data(save_path=MOCK_DATA_PATH)
 
     df = preprocess_dataframe(df)
     return df

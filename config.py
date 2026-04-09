@@ -25,6 +25,8 @@ PROCESSED_DATA_DIR: Path = DATA_DIR / "processed"
 
 # Primary dataset file (Sentiment140 or mock fallback)
 SENTIMENT140_PATH: Path = RAW_DATA_DIR / "twitter_training.csv"
+# TweetEval sentiment dataset (preferred when available)
+TWEET_EVAL_PATH: Path = RAW_DATA_DIR / "tweet_eval_sentiment.csv"
 MOCK_DATA_PATH: Path = RAW_DATA_DIR / "mock_data.csv"
 
 # ---------------------------------------------------------------------------
