@@ -11,6 +11,17 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ---
 
+## [2.3.1] — 2026-04-12
+
+### Changed
+- Complete BERT fine-tuning on TweetEval (3 epochs, RTX 5060 Laptop GPU, 28.5 min):
+  - Epoch 2 best val_acc 0.7175; test Acc 0.6889, F1 0.6873, AUC 0.8660
+  - Negative class recall improved from 0.35 (baseline) to 0.79 with contextual BERT representations
+- `README.md` / `README_CN.md` — filled BERT column in Model Performance table with real results;
+  added per-class BERT breakdown table; updated footnote with training details
+
+---
+
 ## [2.3.0] — 2026-04-12
 
 ### Added

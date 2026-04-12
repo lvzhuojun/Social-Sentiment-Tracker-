@@ -373,16 +373,16 @@ Three-class sentiment: 0 = Negative · 1 = Positive · 2 = Neutral.
 
 | Metric | Baseline (TF-IDF + LR) | BERT (bert-base-uncased) |
 |--------|------------------------|--------------------------|
-| Accuracy | **0.5935** | training in progress |
-| Precision (weighted) | **0.6096** | — |
-| Recall (weighted) | **0.5935** | — |
-| F1 (weighted) | **0.5788** | — |
-| ROC-AUC (macro OvR) | **0.7724** | — |
+| Accuracy | 0.5935 | **0.6889** |
+| Precision (weighted) | 0.6096 | **0.6973** |
+| Recall (weighted) | 0.5935 | **0.6889** |
+| F1 (weighted) | 0.5788 | **0.6873** |
+| ROC-AUC (macro OvR) | 0.7724 | **0.8660** |
 
 > Dataset: `tweet_eval/sentiment` from HuggingFace (45,615 train / 2,000 val / 12,284 test).
-> BERT results will be populated after full fine-tuning completes (3 epochs, GPU, ~90 min).
-> All metrics computed by `src/evaluate.evaluate_model()`; confusion matrices and ROC curves
-> saved to `reports/figures/` with OvR multi-class ROC support.
+> BERT fine-tuned for 3 epochs on RTX 5060 Laptop GPU (~28.5 min); best checkpoint at Epoch 2
+> (val_acc 0.7175). All metrics computed by `src/evaluate.evaluate_model()`; confusion matrices
+> and ROC curves saved to `reports/figures/` with OvR multi-class ROC support.
 
 **Per-class breakdown — Baseline:**
 
@@ -392,8 +392,16 @@ Three-class sentiment: 0 = Negative · 1 = Positive · 2 = Neutral.
 | Positive (1) | 0.53 | 0.62 | 0.57 | 2,371 |
 | Neutral (2) | 0.59 | 0.75 | 0.66 | 5,925 |
 
-> **Negative class has the lowest recall (0.35)** — the most common error is negative samples
-> predicted as neutral. This is a known limitation of bag-of-words models on negation-heavy text.
+**Per-class breakdown — BERT:**
+
+| Class | Precision | Recall | F1 | Support |
+|-------|-----------|--------|----|---------|
+| Negative (0) | 0.67 | 0.79 | 0.72 | 3,968 |
+| Positive (1) | 0.62 | 0.73 | 0.67 | 2,371 |
+| Neutral (2) | 0.75 | 0.61 | 0.67 | 5,925 |
+
+> **BERT improves over baseline by +9.5 pp Accuracy, +10.9 pp F1, +9.4 pp AUC.**
+> Negative class recall rises dramatically from 0.35 → 0.79 thanks to contextual representations.
 > See `notebooks/04_error_analysis.ipynb` for a detailed failure-mode investigation.
 
 ---
