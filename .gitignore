@@ -48,6 +48,7 @@ Thumbs.db
 # ── Secrets / credentials ────────────────────────────────────────────────────
 .env
 .env.*
+!.env.example
 secrets.yaml
 credentials.json
 
