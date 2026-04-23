@@ -76,3 +76,15 @@ logs/
 CLAUDE.md
 HANDOFF.md
 INTERVIEW_GUIDE.md
+
+# ── agentic_rag subproject — generated / binary artefacts ────────────────────
+agentic_rag/vector_store/
+agentic_rag/*.faiss
+agentic_rag/*.index
+agentic_rag/cache/
+agentic_rag/.env
+agentic_rag/.env.*
+agentic_rag/model_cache/
+agentic_rag/embeddings/
+agentic_rag/*.npy
+agentic_rag/*.npz

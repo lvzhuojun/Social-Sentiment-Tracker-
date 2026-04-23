@@ -22,6 +22,9 @@ Thank you for your interest in contributing! This document defines the standards
 - [Branch Naming](#branch-naming)
 - [Pull Request Checklist](#pull-request-checklist)
 - [Code Style](#code-style)
+- [Directory Structure](#directory-structure)
+- [.gitignore Supplement Rules](#gitignore-supplement-rules)
+- [Forbidden Items](#forbidden-items)
 - [Getting Help](#getting-help)
 
 ---
@@ -269,6 +272,12 @@ All commits must follow [Conventional Commits v1.0.0](https://www.conventionalco
 | `docs` | `README.md`, `README_CN.md`, `CHANGELOG.md`, `CONTRIBUTING.md` |
 | `deps` | `requirements.txt`, `environment.yml` |
 | `ci` | GitHub Actions workflows |
+| `rag` | `agentic_rag/` — any file in the RAG subproject |
+| `rag_embed` | `agentic_rag/embedder.py` |
+| `rag_retriever` | `agentic_rag/retriever.py` |
+| `rag_agent` | `agentic_rag/agent.py` |
+| `rag_api` | `agentic_rag/api.py` |
+| `rag_config` | `agentic_rag/config.py` |
 
 ---
 
@@ -382,6 +391,140 @@ Copy this template into every PR description:
 | Paths | Always use `pathlib.Path` — never raw string paths |
 | Constants | Define in `config.py` — never hardcode numbers or paths in module files |
 | Exception handling | Only catch specific exceptions; never bare `except:` |
+
+---
+
+## Directory Structure
+
+```
+DS/
+├── social-sentiment-tracker/       # existing project (BERT sentiment, FastAPI, Streamlit)
+│   ├── src/                        # core library modules — one concern per file
+│   │   ├── bert_model.py           #   BERT fine-tuning + inference
+│   │   ├── baseline_model.py       #   TF-IDF + LR baseline
+│   │   ├── data_loader.py          #   dataset loading + text cleaning
+│   │   ├── preprocess.py           #   tokenisation + split helpers
+│   │   ├── evaluate.py             #   metrics + confusion matrix
+│   │   ├── explain.py              #   SHAP explanations
+│   │   └── visualize.py            #   all matplotlib/plotly figures
+│   ├── api/
+│   │   ├── serve.py                #   FastAPI app (health, /predict, /predict/batch)
+│   │   └── requirements.txt        #   API-only slim deps
+│   ├── app/
+│   │   └── streamlit_app.py        #   Streamlit frontend
+│   ├── scripts/                    # one-off training / tuning entry-points
+│   ├── notebooks/                  # numbered EDA + modelling notebooks
+│   ├── tests/                      # pytest — mirrors src/ structure
+│   ├── data/raw/                   # (git-ignored) original datasets
+│   ├── data/processed/             # (git-ignored) train/val/test splits
+│   ├── models/                     # (git-ignored) serialised weights
+│   ├── reports/figures/            # committed PNG charts for README
+│   ├── config.py                   # single source of truth for paths + hyperparams
+│   ├── environment.yml             # reproducible conda env spec
+│   └── requirements.txt            # pinned pip deps
+│
+└── agentic_rag/                    # NEW — Agentic RAG subproject
+    ├── src/
+    │   ├── embedder.py             #   BERT embedding wrapper (get_embedding / encode_batch)
+    │   ├── retriever.py            #   FAISS index build + similarity search
+    │   ├── agent.py                #   LangChain agent + tool definitions
+    │   └── utils.py                #   shared helpers (chunking, text normalisation)
+    ├── api/
+    │   └── serve.py                #   FastAPI endpoints (/query, /index, /health)
+    ├── tests/                      # pytest for every src/ module
+    ├── vector_store/               # (git-ignored) persisted FAISS index files
+    ├── cache/                      # (git-ignored) LLM response cache
+    ├── config.py                   # paths + env-var loading (API keys via os.getenv)
+    ├── requirements.txt            # agentic_rag-specific deps
+    └── README.md                   # subproject README (English)
+```
+
+**Rules:**
+
+- Every `src/` module has **one responsibility** — do not put retrieval logic inside the agent file.
+- New files go into the appropriate `src/` directory — do not create top-level files unless they are entry-points (`run_*.py`, `main.py`).
+- Test files mirror `src/` names exactly: `src/embedder.py` → `tests/test_embedder.py`.
+- `config.py` is the **only** place that reads environment variables and defines file paths — no `os.getenv()` calls scattered in other modules.
+- Cross-subproject imports are **not allowed** — `agentic_rag` must not import from `social-sentiment-tracker/src` directly; copy or package shared utilities.
+
+---
+
+## .gitignore Supplement Rules
+
+The following patterns are **not yet in `.gitignore`** but must be respected for `agentic_rag/`. Add them to the root `.gitignore` once the subproject directory exists:
+
+```gitignore
+# ── agentic_rag — vector store index files (can be gigabytes) ────────────────
+agentic_rag/vector_store/
+agentic_rag/*.faiss
+agentic_rag/*.index
+
+# ── agentic_rag — LLM response cache ─────────────────────────────────────────
+agentic_rag/cache/
+
+# ── agentic_rag — any .env file with API keys ────────────────────────────────
+agentic_rag/.env
+agentic_rag/.env.*
+
+# ── agentic_rag — model/tokenizer downloads (HuggingFace cache) ──────────────
+agentic_rag/model_cache/
+
+# ── agentic_rag — serialised embeddings (numpy arrays, pickle) ───────────────
+agentic_rag/embeddings/
+agentic_rag/*.npy
+agentic_rag/*.npz
+```
+
+**General rules that already apply and must be observed:**
+
+| Pattern | Reason |
+|---------|--------|
+| `*.pt`, `*.pkl`, `*.bin` | Model weights — too large; regenerate from training scripts |
+| `data/raw/` | Datasets may have licence restrictions; regenerate with `download_data.py` |
+| `.env`, `secrets.yaml` | Contains API keys — **never** commit under any circumstances |
+| `logs/` | Runtime artefacts — no diagnostic value in version history |
+| `*_executed.ipynb` | Executed notebooks contain absolute local paths in cell outputs |
+| `reports/metrics.json` | Generated at evaluation time; not a source file |
+
+---
+
+## Forbidden Items
+
+The following actions are **strictly prohibited** in all commits and PRs:
+
+### Secrets and credentials
+- **Never** commit any file containing API keys, tokens, passwords, or connection strings.
+  This includes `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, database URIs, and OAuth tokens.
+- All secrets must be loaded via `os.getenv("KEY_NAME")` and provided through a `.env`
+  file that is git-ignored, or through the deployment environment.
+- If a secret is accidentally committed, treat it as compromised immediately — rotate it
+  before pushing any fix.
+
+### Large binary files
+- Do not commit model weights (`*.pt`, `*.pkl`, `*.bin`, `*.onnx`).
+- Do not commit FAISS indexes (`*.faiss`, `*.index`) or embedding arrays (`*.npy`, `*.npz`).
+- Do not commit raw datasets (`data/raw/`).
+
+### Code quality violations
+- **No bare `except:`** — always catch a specific exception class.
+- **No `print()` in `src/` or `agentic_rag/src/`** — use `config.get_logger(__name__)`.
+- **No hardcoded paths** — all file paths go through `config.py` using `pathlib.Path`.
+- **No hardcoded API keys or model names** as string literals — use constants in `config.py`
+  and read secrets from environment variables.
+- **No `import *`** — explicit imports only.
+
+### Workflow violations
+- Do not push directly to `main` — all changes go through a feature branch and PR.
+- Do not skip the PR checklist (copy it into every PR description).
+- Do not commit without updating `CHANGELOG.md` for any user-visible change.
+- Do not use `--no-verify` to bypass pre-commit hooks.
+- Do not batch unrelated changes into a single commit — one logical concern per commit.
+- Do not `force-push` to `main` or any shared branch.
+
+### Documentation violations
+- Do not add a new public function without a Google-style docstring
+  (`Args`, `Returns`, `Raises`, `Example`).
+- Do not change `README.md` without mirroring the change in `README_CN.md` in the same commit.
 
 ---
 
